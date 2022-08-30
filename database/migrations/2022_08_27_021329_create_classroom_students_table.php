@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('classroom_students', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_classroom');
-            $table->foreign('id_classroom')->references('id_classroom')->on('classrooms');
-            $table->unsignedBigInteger('id_student');
-            $table->foreign('id_student')->references('id_student')->on('students');
+            $table->bigIncrements('id_classroom_student');
+            $table->foreignId('id_classroom');
+            $table->foreignId('id_student');
+            
+            $table->foreign('id_classroom')->references('id_classroom')->on('classrooms')->onDelete('cascade');
+            $table->foreign('id_student')->references('id_student')->on('students')->onDelete('cascade');
             $table->timestamps();
         });
     }

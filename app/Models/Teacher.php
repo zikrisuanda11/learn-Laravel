@@ -12,7 +12,7 @@ class Teacher extends Model
 
     protected $primaryKey = 'id_teacher';
 
-    protected $guarded = 'id_teacher';
+    protected $guarded = ['id_teacher'];
 
     public function Course()
     {

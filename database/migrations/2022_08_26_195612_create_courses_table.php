@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_teacher');
             $table->foreign('id_teacher')->references('id_teacher')->on('teachers');
             $table->string('name', 45);
-            $table->string('description', 45);
+            $table->string('description', 45)->nullable();
             $table->timestamps();
         });
     }

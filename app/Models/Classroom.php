@@ -11,7 +11,7 @@ class Classroom extends Model
 
     protected $primaryKey = 'id_classroom';
 
-    protected $guarded = 'id_classroom';
+    protected $guarded = ['id_classroom'];
 
     public function Grade()
     {
@@ -23,9 +23,9 @@ class Classroom extends Model
         return $this->belongsTo(Teacher::class, 'id_teacher', 'id_teacher');
     }
 
-    public function ClassroomStudent()
+    public function Students()
     {
-        return $this->hasMany(ClassroomStudent::class);
+        return $this->belongsToMany(Student::class);
     }
 
 }

@@ -9,13 +9,7 @@ class ClassroomStudent extends Model
 {
     use HasFactory;
 
-    public function Classroom()
-    {
-        return $this->belongsTo(Classroom::class, 'id_classroom', 'id_classroom');
-    }
+    protected $primaryKey = 'id_classroom_student';
 
-    public function Student()
-    {
-        return $this->belongsTo(Student::class, 'id_student', 'id_student');
-    }
+    protected $guarded = ['id_classroom_student'];
 }

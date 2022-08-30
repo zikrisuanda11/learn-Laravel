@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('password', 45);
             $table->string('fname', 45);
             $table->string('lname', 45);
+            $table->date('date_of_birth');
             $table->string('phone', 15);
+            $table->boolean('status');
             $table->timestamps();
         });
     }

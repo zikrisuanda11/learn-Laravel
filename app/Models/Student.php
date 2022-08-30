@@ -11,16 +11,11 @@ class Student extends Model
     
     protected $primaryKey = 'id_student';
 
-    protected $guarded = 'id_student';
+    protected $guarded = ['id_student'];
 
     public function Parentt()
     {
         return $this->hasMany(Parentt::class, 'id_parent', 'id_parent');
-    }
-
-    public function ClassroomStudent()
-    {
-        return $this->hasMany(ClassroomStudent::class);
     }
 
     public function Attendance()
@@ -31,5 +26,10 @@ class Student extends Model
     public function ExamResult()
     {
         return $this->hasMany(ExamResult::class);
+    }
+
+    public function Clasrooms()
+    {
+        return $this->belongsToMany(Clasrooms::class);
     }
 }
