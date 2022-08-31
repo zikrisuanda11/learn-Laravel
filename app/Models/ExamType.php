@@ -11,7 +11,7 @@ class ExamType extends Model
 
     protected $primaryKey = 'id_exam_type';
 
-    protected $guarded = 'id_exam_type';
+    protected $guarded = ['id_exam_type'];
 
     public function Exam()
     {

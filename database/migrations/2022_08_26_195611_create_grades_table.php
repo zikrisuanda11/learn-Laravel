@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('grades', function (Blueprint $table) {
             $table->bigIncrements('id_grade');
             $table->string('name', 45);
-            $table->string('description', 45);
+            $table->string('description', 45)->nullable();
             $table->timestamps();
         });
     }

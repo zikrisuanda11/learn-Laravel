@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_grade');
             $table->foreign('id_grade')->references('id_grade')->on('grades');
             $table->boolean('status');
-            $table->string('remarks', 45);
+            $table->string('remarks', 45)->nullable();
             $table->unsignedBigInteger('id_teacher');
             $table->foreign('id_teacher')->references('id_teacher')->on('teachers');
             $table->timestamps();

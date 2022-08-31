@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('exam_types', function (Blueprint $table) {
             $table->bigIncrements('id_exam_type');
             $table->string('name', 45);
-            $table->string('description', 45);
+            $table->string('description', 45)->nullable();
             $table->timestamps();
         });
     }

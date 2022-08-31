@@ -9,6 +9,8 @@ class Attendance extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id_attendance';
+
     protected $fillable = [
         'date',
         'id_student',
