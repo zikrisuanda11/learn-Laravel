@@ -34,13 +34,13 @@ class AuthController extends Controller
             ]);
         }
 
-        // $teacher = Teacher::where('email', $request['email'])->firstOrFail();
-        // if (! Hash::check($request->password, $teacher->password))
-        // {
-        //     return response()->json([
-        //         'message' => 'Error In Login'
-        //     ]);
-        // }
+        $teacher = Teacher::where('email', $request['email'])->firstOrFail();
+        if (! Hash::check($request->password, $teacher->password))
+        {
+            return response()->json([
+                'message' => 'Error In Login'
+            ]);
+        }
         
         $teacher = Teacher::where('email', $request->email)->first();
         if (!Hash::check($request->password, $teacher->password))
