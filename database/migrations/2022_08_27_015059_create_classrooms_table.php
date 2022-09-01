@@ -17,11 +17,11 @@ return new class extends Migration
             $table->bigIncrements('id_classroom');
             $table->year('year');
             $table->unsignedBigInteger('id_grade');
-            $table->foreign('id_grade')->references('id_grade')->on('grades');
+            $table->foreign('id_grade')->references('id_grade')->on('grades')->onDelete('cascade');
             $table->boolean('status');
             $table->string('remarks', 45)->nullable();
             $table->unsignedBigInteger('id_teacher');
-            $table->foreign('id_teacher')->references('id_teacher')->on('teachers');
+            $table->foreign('id_teacher')->references('id_teacher')->on('teachers')->onDelete('cascade');
             $table->timestamps();
         });
     }

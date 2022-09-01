@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('exams', function (Blueprint $table) {
             $table->bigIncrements('id_exam');
             $table->unsignedBigInteger('id_exam_type');
-            $table->foreign('id_exam_type')->references('id_exam_type')->on('exam_types');
+            $table->foreign('id_exam_type')->references('id_exam_type')->on('exam_types')->onDelete('cascade');
             $table->string('name', 45);
             $table->date('start_date');
             $table->timestamps();
