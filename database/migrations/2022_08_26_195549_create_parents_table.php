@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('parents', function (Blueprint $table) {
             $table->bigIncrements('id_parent');
             $table->string('email', 45);
-            $table->string('password', 45);
+            $table->string('password');
             $table->string('fname', 45);
             $table->string('lname', 45);
             $table->string('phone', 15);
