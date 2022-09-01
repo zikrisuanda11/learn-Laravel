@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('lname', 45);
             $table->date('date_of_birth');
             $table->string('phone', 15);      
-            $table->boolean('status');      
+            $table->string('status')->default('student');
             $table->timestamps();
         });
     }
