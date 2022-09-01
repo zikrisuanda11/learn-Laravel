@@ -58,8 +58,13 @@ class TeacherController extends Controller
             return response()->json($validator->errors());
         }
         $data = Teacher::create([
-            $request->all(),
-            'password' => Hash::make($request->password)
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'date_of_birth' => $request->date_of_birth,
+            'phone' => $request->phone,
+            'status' => $request->status
         ]);
         return response()->json([
             'message' => 'Success Store Data',
