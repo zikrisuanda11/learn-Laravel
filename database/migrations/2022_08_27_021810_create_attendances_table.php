@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id_attendance');
             $table->date('date');
             $table->unsignedBigInteger('id_student');
-            $table->foreign('id_student')->references('id_student')->on('students');
+            $table->foreign('id_student')->references('id_student')->on('students')->onDelete('cascade');
             $table->enum('status', ['hadir', 'sakit', 'alpa']);
             $table->string('remark')->nullable();
             $table->timestamps();

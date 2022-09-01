@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('courses', function (Blueprint $table) {
             $table->bigIncrements('id_course');
             $table->unsignedBigInteger('id_grade');
-            $table->foreign('id_grade')->references('id_grade')->on('grades');
+            $table->foreign('id_grade')->references('id_grade')->on('grades')->onDelete('cascade');
             $table->unsignedBigInteger('id_teacher');
-            $table->foreign('id_teacher')->references('id_teacher')->on('teachers');
+            $table->foreign('id_teacher')->references('id_teacher')->on('teachers')->onDelete('cascade');
             $table->string('name', 45);
             $table->string('description', 45)->nullable();
             $table->timestamps();
