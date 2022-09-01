@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_parent');
             $table->foreign('id_parent')->references('id_parent')->on('parents')->onDelete('cascade');
             $table->string('email', 45);
-            $table->string('password', 45);
+            $table->string('password');
             $table->string('fname', 45);
             $table->string('lname', 45);
             $table->date('date_of_birth');
