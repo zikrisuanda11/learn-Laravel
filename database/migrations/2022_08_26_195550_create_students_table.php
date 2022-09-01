@@ -17,7 +17,7 @@ return new class extends Migration
             $table->bigIncrements('id_student');
             $table->unsignedBigInteger('id_parent');
             $table->foreign('id_parent')->references('id_parent')->on('parents')->onDelete('cascade');
-            $table->string('email', 45);
+            $table->string('email', 45)->unique();
             $table->string('password');
             $table->string('fname', 45);
             $table->string('lname', 45);
