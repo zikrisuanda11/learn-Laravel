@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
@@ -56,7 +57,10 @@ class TeacherController extends Controller
         {
             return response()->json($validator->errors());
         }
-        $data = Teacher::create($request->all());
+        $data = Teacher::create([
+            $request->all(),
+            'password' => Hash::make($request->password)
+        ]);
         return response()->json([
             'message' => 'Success Store Data',
             'status' => true,

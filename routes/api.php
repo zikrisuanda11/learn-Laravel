@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ClassroomStudentController;
 use App\Http\Controllers\CourseController;
@@ -25,9 +26,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::group(['middleware' => ['auth:sanctum']], function (){
+    Route::post('logout', [AuthController::class, 'logout']);
 });
+
 
 Route::get('/parent', [ParentController::class, 'index']);
 Route::post('/parent', [ParentController::class, 'store']);

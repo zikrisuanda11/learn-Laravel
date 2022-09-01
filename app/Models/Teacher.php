@@ -14,6 +14,11 @@ class Teacher extends Model
 
     protected $guarded = ['id_teacher'];
 
+    protected $hidden = [
+        'password',
+        'remember_token'
+    ];
+
     public function Course()
     {
         return $this->hasMany(Course::class, 'id_teacher', 'id_teacher');
