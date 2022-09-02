@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class TeacherController extends Controller
@@ -49,18 +50,27 @@ class TeacherController extends Controller
             'lname' => 'required',
             'date_of_birth' => 'required',
             'phone' => 'required',
-            'status' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors());
         }
-        $data = Teacher::create($request->all());
+        $data = Teacher::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'date_of_birth' => $request->date_of_birth,
+            'phone' => $request->phone,
+        ]);
+
+        $token = $data->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Success Store Data',
+            'message' => 'Success Register Data',
             'status' => true,
-            'data' => $data
+            'data' => $data,
+            'token' => $token
         ]);
     }
 
@@ -104,15 +114,20 @@ class TeacherController extends Controller
             'lname' => 'required',
             'date_of_birth' => 'required',
             'phone' => 'required',
-            'status' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
-        $data->update($request->all());
+        $data->update([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'date_of_birth' => $request->date_of_birth,
+            'phone' => $request->phone,
+        ]);
         return response()->json([
             'message' => 'Success Update Data',
             'status' => true,
@@ -134,5 +149,38 @@ class TeacherController extends Controller
             'status' => true,
             'message' => 'Data Success Delete'
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        $teacher = Teacher::where('email', $request->email)->first();
+        if (!$teacher) {
+            return response()->json([
+                'message' => 'email salah'
+            ]);
+        }
+        if (!Hash::check($request->password, $teacher->password)) {
+            return response()->json([
+                'message' => 'password salah'
+            ]);
+        }
+
+        $token = $teacher->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'message' => 'success Login',
+            'status' => true,
+            'token_type' => 'Bearer',
+            'access token' => $token
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
+
+        return [
+            'message' => 'berhasil logout'
+        ];
     }
 }

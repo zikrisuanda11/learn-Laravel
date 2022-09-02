@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Parents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ParentController extends Controller
@@ -49,19 +50,28 @@ class ParentController extends Controller
             'lname' => 'required',
             'date_of_birth' => 'required',
             'phone' => 'required',
-            'status' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
-        $data = Parents::create($request->all());
+        $data = Parents::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'date_of_birth' => $request->date_of_birth,
+            'phone' => $request->phone,
+        ]);
+
+        $token = $data->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'message' => 'Success Store Data',
+            'message' => 'Success Register Data',
             'status' => true,
-            'data' => $data
+            'data' => $data,
+            'token' => $token
         ]);
     }
 
@@ -105,15 +115,20 @@ class ParentController extends Controller
             'lname' => 'required',
             'date_of_birth' => 'required',
             'phone' => 'required',
-            'status' => 'required'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
-        $data->update($request->all());
+        $data->update([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'date_of_birth' => $request->date_of_birth,
+            'phone' => $request->phone,
+        ]);
         return response()->json([
             'message' => 'Success Update Data',
             'status' => true,
@@ -135,5 +150,39 @@ class ParentController extends Controller
             'status' => true,
             'message' => 'Data Success Delete'
         ]);
+    }
+
+    public function login(Request $request)
+    {
+        $parent = Parents::where('email', $request->email)->first();
+        if (!$parent) {
+            return response()->json([
+                'message' => 'email salah'
+            ]);
+        }
+        if (!Hash::check($request->password, $parent->password)) {
+            return response()->json([
+                'message' => 'password salah'
+            ]);
+        }
+
+        $token = $parent->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'message' => 'Success Login',
+            'status' => true,
+            'token_type' => 'Bearer',
+            'access token' => $token
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        dd($request->all());
+        // $user = $request->user();
+        // $user->currentAccessToken()->delete();
+
+        // return [
+        //     'message' => 'berhasil logout'
+        // ];
     }
 }

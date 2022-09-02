@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ClassroomStudentController;
 use App\Http\Controllers\CourseController;
@@ -25,9 +26,28 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('/login-parent', [ParentController::class, 'login']);
+Route::post('/login-teacher', [TeacherController::class, 'login']);
+Route::post('/login-student', [StudentController::class, 'login']);
+
+Route::post('/register-parent', [ParentController::class, 'store']);
+Route::post('/register-student', [StudentController::class, 'store']);
+Route::post('/register-teacher', [TeacherController::class, 'store']);
+
+
+Route::group(['middleware' => ['auth:sanctum']], function (){
+    Route::post('/logout-parent', [ParentController::class, 'logout']);
+    Route::post('/logout-student', [StudentController::class, 'logout']);
+    Route::post('/logout-teacher', [TeacherController::class, 'logout']);
+
+    Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('logout-all', [AuthController::class, 'logoutall']);
 });
+
 
 Route::get('/parent', [ParentController::class, 'index']);
 Route::post('/parent', [ParentController::class, 'store']);
