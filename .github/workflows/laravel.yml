@@ -41,6 +41,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         port: ${{ secrets.PORT }}
+        passphrase: ${{secrets.PASSPHRASE}}
         script : |
           cd /var/www/backend-bookinghub
           git pull origin main
