@@ -46,4 +46,4 @@ jobs:
           cd /var/www/si-sekolah
           git pull origin master
           composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          php artisan migrate
+          php artisan migrate --force
