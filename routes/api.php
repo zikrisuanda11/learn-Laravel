@@ -43,9 +43,6 @@ Route::group(['middleware' => ['auth:sanctum']], function (){
     Route::post('/logout-parent', [ParentController::class, 'logout']);
     Route::post('/logout-student', [StudentController::class, 'logout']);
     Route::post('/logout-teacher', [TeacherController::class, 'logout']);
-
-    Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('logout-all', [AuthController::class, 'logoutall']);
 });
 
 
