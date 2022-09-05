@@ -14,6 +14,11 @@ class Student extends Model
 
     protected $guarded = ['id_student'];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function Parentt()
     {
         return $this->hasMany(Parentt::class, 'id_parent', 'id_parent');

@@ -22,6 +22,11 @@ class Parents extends Model
         'status'
     ];
 
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
     public function Student()
     {
         return $this->belongsTo(Student::class, 'id_parent', 'id_parent');
