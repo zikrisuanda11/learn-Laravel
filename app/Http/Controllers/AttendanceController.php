@@ -69,7 +69,13 @@ class AttendanceController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Attendance::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**

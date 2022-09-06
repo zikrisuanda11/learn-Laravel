@@ -85,7 +85,13 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Student::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**
