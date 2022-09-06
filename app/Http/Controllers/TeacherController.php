@@ -82,7 +82,13 @@ class TeacherController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Teacher::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**

@@ -69,7 +69,13 @@ class ExamController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Exam::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**

@@ -83,7 +83,13 @@ class ParentController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Parents::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**
@@ -177,12 +183,11 @@ class ParentController extends Controller
 
     public function logout(Request $request)
     {
-        dd($request->all());
-        // $user = $request->user();
-        // $user->currentAccessToken()->delete();
+        $user = $request->user();
+        $user->currentAccessToken()->delete();
 
-        // return [
-        //     'message' => 'berhasil logout'
-        // ];
+        return [
+            'message' => 'berhasil logout'
+        ];
     }
 }

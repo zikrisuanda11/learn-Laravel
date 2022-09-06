@@ -70,7 +70,13 @@ class CourseController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Course::findOrFail($id);
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ]);
     }
 
     /**
