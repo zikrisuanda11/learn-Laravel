@@ -43,7 +43,7 @@ jobs:
         port: ${{ secrets.PORT }}
         passphrase: ${{secrets.PASSPHRASE}}
         script : |
-          cd /var/www/si-sekolah
+          cd /var/www/SI-Sekolah
           git pull origin master
           composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           php -r "file_exists('.env') || copy('.env.example', '.env');"
