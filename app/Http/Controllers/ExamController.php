@@ -72,7 +72,7 @@ class ExamController extends Controller
         $data = Exam::findOrFail($id);
 
         return response()->json([
-            'message' => 'Success Update Data',
+            'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
         ]);

@@ -85,7 +85,7 @@ class TeacherController extends Controller
         $data = Teacher::findOrFail($id);
 
         return response()->json([
-            'message' => 'Success Update Data',
+            'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
         ]);
