@@ -14,9 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('exam_results', function (Blueprint $table) {
-            // $table->foreignId('id_exam')->constrained('exams')->onDelete('cascade');
-            // $table->foreignId('id_student')->constrained('students')->onDelete('cascade');
-            // $table->foreignId('id_course')->constrained('courses')->onDelete('cascade');
+            $table->bigIncrements('id_exam_result');
             $table->unsignedBigInteger('id_exam');
             $table->foreign('id_exam')->references('id_exam')->on('exams')->onDelete('cascade');
             $table->unsignedBigInteger('id_student');

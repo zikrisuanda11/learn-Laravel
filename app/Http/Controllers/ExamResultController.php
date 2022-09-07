@@ -56,7 +56,7 @@ class ExamResultController extends Controller
 
         $data = ExamResult::create($request->all());
         return response()->json([
-            'message' => 'Success Store Data',
+            'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
         ]);

@@ -71,7 +71,7 @@ class ExamTypeController extends Controller
         $data = ExamType::findOrFail($id);
 
         return response()->json([
-            'message' => 'Success Update Data',
+            'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
         ]);

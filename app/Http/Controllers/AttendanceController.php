@@ -72,7 +72,7 @@ class AttendanceController extends Controller
         $data = Attendance::findOrFail($id);
 
         return response()->json([
-            'message' => 'Success Update Data',
+            'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
         ]);
