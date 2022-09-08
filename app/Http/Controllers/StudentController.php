@@ -44,13 +44,13 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id_parent' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'fname' => 'required',
-            'lname' => 'required',
+            'id_parent' => 'required|numeric',
+            'email' => 'required|unique:students',
+            'password' => 'required|min:8|max:24',
+            'fname' => 'required|max:45',
+            'lname' => 'required|max:45',
             'date_of_birth' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|max:15',
         ]);
 
         if ($validator->fails()) {
