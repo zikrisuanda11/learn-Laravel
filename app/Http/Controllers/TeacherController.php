@@ -44,12 +44,12 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required',
-            'password' => 'required',
-            'fname' => 'required',
-            'lname' => 'required',
+            'email' => 'required|unique:teachers',
+            'password' => 'required|min:8|max:24',
+            'fname' => 'required|max:45',
+            'lname' => 'required|max:45',
             'date_of_birth' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|max:15',
         ]);
 
         if ($validator->fails()) {
