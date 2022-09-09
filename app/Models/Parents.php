@@ -12,15 +12,7 @@ class Parents extends Model
 
     protected $primaryKey = 'id_parent';
 
-    protected $fillable = [
-        'email',
-        'password',
-        'fname',
-        'lname',
-        'date_of_birth',
-        'phone',
-        'status'
-    ];
+    protected $guarded = ['id_parent'];
 
     protected $hidden = [
         'password',

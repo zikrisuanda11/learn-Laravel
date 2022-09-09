@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Parents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ParentController extends Controller
 {
@@ -22,7 +25,7 @@ class ParentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -43,18 +46,23 @@ class ParentController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'email' => 'required|unique:parents',
             'password' => 'required|min:8|max:24',
             'fname' => 'required|max:45',
             'lname' => 'required|max:45',
             'date_of_birth' => 'required',
+            'profile_user' => 'required',
             'phone' => 'required|max:15',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $storeImage = Storage::put('public/parent/foto_profile', $request->file('profile_user'));
+        $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
 
         $data = Parents::create([
             'email' => $request->email,
@@ -62,6 +70,7 @@ class ParentController extends Controller
             'fname' => $request->fname,
             'lname' => $request->lname,
             'date_of_birth' => $request->date_of_birth,
+            'profile_user' => $storeImageUrl,
             'phone' => $request->phone,
         ]);
 
@@ -72,7 +81,7 @@ class ParentController extends Controller
             'status' => true,
             'data' => $data,
             'token' => $token
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -89,7 +98,7 @@ class ParentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -112,6 +121,7 @@ class ParentController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // dd($request->all());
         $data = Parents::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
@@ -124,22 +134,40 @@ class ParentController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $data->update([
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'date_of_birth' => $request->date_of_birth,
-            'phone' => $request->phone,
-        ]);
+        if(isset($request->profile_user)){
+            File::delete(public_path($data->profile_user));
+
+            $storeImage = Storage::put('public/parent/foto_profile', $request->file('profile_user'));
+            $storeImageUrl = Storage::url($storeImage, 'public/icon');
+            $data->update([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,
+                'profile_user' => $storeImageUrl,
+                'phone' => $request->phone,
+            ]);
+        }else{
+            $data->update([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,                
+                'phone' => $request->phone,
+            ]);
+            
+        }
+        
         return response()->json([
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ],Response::HTTP_OK);
     }
 
     /**
@@ -186,8 +214,8 @@ class ParentController extends Controller
         $user = $request->user();
         $user->currentAccessToken()->delete();
 
-        return [
+        return response()->json([
             'message' => 'berhasil logout'
-        ];
+        ], Response::HTTP_OK);
     }
 }
