@@ -52,7 +52,6 @@ class TeacherController extends Controller
             'fname' => 'required|max:45',
             'lname' => 'required|max:45',
             'date_of_birth' => 'required',
-            'profile_user' => 'required',
             'phone' => 'required|max:15',
         ]);
 
