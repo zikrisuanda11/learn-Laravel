@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Exam;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExamController extends Controller
 {
@@ -21,7 +22,7 @@ class ExamController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -50,7 +51,7 @@ class ExamController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = Exam::create($request->all());
@@ -58,7 +59,7 @@ class ExamController extends Controller
             'message' => 'Success Store Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -75,7 +76,7 @@ class ExamController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -108,7 +109,7 @@ class ExamController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data->update($request->all());
@@ -116,7 +117,7 @@ class ExamController extends Controller
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -132,6 +133,6 @@ class ExamController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Data Success Delete'
-        ]);
+        ], Response::HTTP_OK);
     }
 }

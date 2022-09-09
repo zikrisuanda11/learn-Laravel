@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ExamType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExamTypeController extends Controller
 {
@@ -21,7 +22,7 @@ class ExamTypeController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -49,7 +50,7 @@ class ExamTypeController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = ExamType::create($request->all());
@@ -57,7 +58,7 @@ class ExamTypeController extends Controller
             'message' => 'Success Store Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -74,7 +75,7 @@ class ExamTypeController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -106,7 +107,7 @@ class ExamTypeController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data->update($request->all());
@@ -114,7 +115,7 @@ class ExamTypeController extends Controller
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -130,6 +131,6 @@ class ExamTypeController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Data Success Delete'
-        ]);
+        ], Response::HTTP_OK);
     }
 }

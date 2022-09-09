@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClassroomStudent;
 use Illuminate\Http\Request;
+use App\Models\ClassroomStudent;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ClassroomStudentController extends Controller
 {
@@ -21,7 +22,7 @@ class ClassroomStudentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -50,7 +51,7 @@ class ClassroomStudentController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = ClassroomStudent::create($request->all());
@@ -58,7 +59,7 @@ class ClassroomStudentController extends Controller
             'message' => 'Success Store Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -75,7 +76,7 @@ class ClassroomStudentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -107,7 +108,7 @@ class ClassroomStudentController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data->update($request->all());
@@ -115,7 +116,7 @@ class ClassroomStudentController extends Controller
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -131,6 +132,6 @@ class ClassroomStudentController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Data Success Delete'
-        ]);
+        ], Response::HTTP_OK);
     }
 }

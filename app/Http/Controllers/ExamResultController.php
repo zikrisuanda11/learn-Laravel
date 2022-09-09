@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ExamResult;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ExamResultController extends Controller
 {
@@ -21,7 +22,7 @@ class ExamResultController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -51,7 +52,7 @@ class ExamResultController extends Controller
         
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data = ExamResult::create($request->all());
@@ -59,7 +60,7 @@ class ExamResultController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -76,7 +77,7 @@ class ExamResultController extends Controller
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -108,7 +109,7 @@ class ExamResultController extends Controller
 
         if ($validator->fails())
         {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $data->update($request->all());
@@ -116,7 +117,7 @@ class ExamResultController extends Controller
             'message' => 'Success Update Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -132,6 +133,6 @@ class ExamResultController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Data Success Delete'
-        ]);
+        ], Response::HTTP_OK);
     }
 }
