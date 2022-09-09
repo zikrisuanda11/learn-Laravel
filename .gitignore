@@ -16,3 +16,6 @@ yarn-error.log
 /.vscode
 OpenApi.json.bak
 OpenApiExample.json
+.env.testing
+test.sqlite
+tests/Feature/ParentTest.php

@@ -43,13 +43,13 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/student-logout', [StudentController::class, 'logout']);
     Route::post('/teacher-logout', [TeacherController::class, 'logout']);
     
-    Route::put('/parent/{id}', [ParentController::class, 'update']);
+    Route::post('/parent/{id}', [ParentController::class, 'update']);
     Route::delete('/parent/{id}', [ParentController::class, 'destroy']);
     
-    Route::put('/student/{id}', [StudentController::class, 'update']);
+    Route::post('/student/{id}', [StudentController::class, 'update']);
     Route::delete('/student/{id}', [StudentController::class, 'destroy']);
 
-    Route::put('/teacher/{id}', [TeacherController::class, 'update']);
+    Route::post('/teacher/{id}', [TeacherController::class, 'update']);
     Route::delete('/teacher/{id}', [TeacherController::class, 'destroy']);
 
     Route::post('/course', [CourseController::class, 'store']);

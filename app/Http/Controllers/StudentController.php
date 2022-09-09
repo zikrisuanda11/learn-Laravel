@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
 {
@@ -22,7 +25,7 @@ class StudentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -50,12 +53,16 @@ class StudentController extends Controller
             'fname' => 'required|max:45',
             'lname' => 'required|max:45',
             'date_of_birth' => 'required',
+            'profile_user' => 'required',
             'phone' => 'required|max:15',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        $storeImage = Storage::put('public/student/foto_profile', $request->file('profile_user'));
+        $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
 
         $data = Student::create([
             'id_parent' => $request->id_parent,
@@ -64,6 +71,7 @@ class StudentController extends Controller
             'fname' => $request->fname,
             'lname' => $request->lname,
             'date_of_birth' => $request->date_of_birth,
+            'profile_user' => $storeImageUrl,
             'phone' => $request->phone,
         ]);
 
@@ -74,7 +82,7 @@ class StudentController extends Controller
             'status' => true,
             'data' => $data,
             'token' => $token
-        ]);
+        ], Response::HTTP_CREATED);
     }
 
     /**
@@ -91,7 +99,7 @@ class StudentController extends Controller
             'message' => 'Success Get Data',
             'status' => true,
             'data' => $data
-        ]);
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -118,27 +126,52 @@ class StudentController extends Controller
 
         $validator = Validator::make($request->all(), [
             'id_parent' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'fname' => 'required',
-            'lname' => 'required',
+            'email' => 'required|unique:parents',
+            'password' => 'required|min:8|max:24',
+            'fname' => 'required|max:45',
+            'lname' => 'required|max:45',
             'date_of_birth' => 'required',
-            'phone' => 'required',
+            'phone' => 'required|max:15',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $data->update([
-            'id_parent' => $request->id_parent,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'fname' => $request->fname,
-            'lname' => $request->lname,
-            'date_of_birth' => $request->date_of_birth,
-            'phone' => $request->phone,
-        ]);
+
+        if (isset($request->profile_user)) {
+            File::delete(public_path($data->profile_user));
+
+            $storeImage = Storage::put('public/student/foto_profile', $request->file('profile_user'));
+            $storeImageUrl = Storage::url($storeImage, 'public/icon');
+            
+            $data->update([
+                'id_parent' => $request->id_parent,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,
+                'profile_user' => $storeImageUrl,
+                'phone' => $request->phone,
+            ]);
+        } else {
+            $data->update([
+                'id_parent' => $request->id_parent,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,                
+                'phone' => $request->phone,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Success Update Data',
+            'status' => true,
+            'data' => $data
+        ], Response::HTTP_OK);
     }
 
     /**
@@ -154,7 +187,7 @@ class StudentController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Data Success Delete'
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function login(Request $request)
@@ -177,7 +210,7 @@ class StudentController extends Controller
             'status' => true,
             'token_type' => 'Bearer',
             'access token' => $token
-        ]);
+        ], Response::HTTP_OK);
     }
 
     public function logout(Request $request)
@@ -185,8 +218,8 @@ class StudentController extends Controller
         $user = $request->user();
         $user->currentAccessToken()->delete();
 
-        return [
+        return response()->json([
             'message' => 'berhasil logout'
-        ];
+        ], Response::HTTP_OK);
     }
 }

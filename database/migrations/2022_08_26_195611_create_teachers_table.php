@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('lname', 45);
             $table->date('date_of_birth');
             $table->string('phone', 15);
+            $table->string('profile_user');
             $table->timestamps();
         });
     }
