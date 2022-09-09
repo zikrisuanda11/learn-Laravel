@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('password');
             $table->string('fname', 45);
             $table->string('lname', 45);
-            $table->date('date_of_birth');
+            $table->date('date_of_birth')->nullable();
             $table->string('phone', 15);
-            $table->string('profile_user');
+            $table->string('profile_user')->nullable();
             $table->timestamps();
         });
     }
