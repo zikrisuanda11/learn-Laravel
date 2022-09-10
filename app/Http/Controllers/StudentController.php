@@ -60,9 +60,23 @@ class StudentController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $storeImage = Storage::put('public/student/foto_profile', $request->file('profile_user'));
-        $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
-
+        if(isset($request->profile_user))
+        {
+            $storeImage = Storage::put('public/student/foto_profile', $request->file('profile_user'));
+            $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
+    
+            $data = Student::create([
+                'id_parent' => $request->id_parent,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,
+                'profile_user' => $storeImageUrl,
+                'phone' => $request->phone,
+            ]);
+            
+        }
         $data = Student::create([
             'id_parent' => $request->id_parent,
             'email' => $request->email,
@@ -70,9 +84,9 @@ class StudentController extends Controller
             'fname' => $request->fname,
             'lname' => $request->lname,
             'date_of_birth' => $request->date_of_birth,
-            'profile_user' => $storeImageUrl,
             'phone' => $request->phone,
         ]);
+        
 
         $token = $data->createToken('auth_token')->plainTextToken;
 

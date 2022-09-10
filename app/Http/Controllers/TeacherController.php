@@ -59,16 +59,27 @@ class TeacherController extends Controller
             return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $storeImage = Storage::put('public/teacher/foto_profile', $request->file('profile_user'));
-        $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
-
+        if(isset($request->profile_user))
+        {
+            $storeImage = Storage::put('public/teacher/foto_profile', $request->file('profile_user'));
+            $storeImageUrl = Storage::url($storeImage, 'public/foto_profile');
+    
+            $data = Teacher::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'fname' => $request->fname,
+                'lname' => $request->lname,
+                'date_of_birth' => $request->date_of_birth,
+                'profile_user' => $storeImageUrl,
+                'phone' => $request->phone,
+            ]);
+        }
         $data = Teacher::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'fname' => $request->fname,
             'lname' => $request->lname,
             'date_of_birth' => $request->date_of_birth,
-            'profile_user' => $storeImageUrl,
             'phone' => $request->phone,
         ]);
 
