@@ -103,8 +103,10 @@ class ExamResultController extends Controller
         $data = ExamResult::findOrFail($id);
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'description' => 'required',
+            'id_exam' => 'required',
+            'id_student' => 'required',
+            'id_course' => 'required',
+            'marks' => 'required',
         ]);
 
         if ($validator->fails())
