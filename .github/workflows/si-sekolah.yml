@@ -26,24 +26,3 @@ jobs:
       run: chmod -R 777 storage bootstrap/cache
     - name: Execute tests (Unit and Feature tests) via PHPUnit
       run: vendor/bin/phpunit
-
-  deploy:
-    needs: [testing]
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - name : 'deploy to server'
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.KEY }}
-        port: ${{ secrets.PORT }}
-        passphrase: ${{secrets.PASSPHRASE}}
-        script : |
-          cd /var/www/SI-Sekolah
-          git pull origin master
-          composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          php -r "file_exists('.env') || copy('.env.example', '.env');"
-          php artisan migrate --force
