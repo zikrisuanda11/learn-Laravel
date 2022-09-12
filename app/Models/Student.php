@@ -19,9 +19,9 @@ class Student extends Model
         'remember_token',
     ];
 
-    public function Parentt()
+    public function Parents()
     {
-        return $this->hasMany(Parentt::class, 'id_parent', 'id_parent');
+        return $this->hasMany(Parents::class, 'id_parent', 'id_parent');
     }
 
     public function Attendance()
